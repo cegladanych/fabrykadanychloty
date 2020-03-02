@@ -66,7 +66,8 @@
 									"type": "DelimitedTextSource",
 									"storeSettings": {
 										"type": "AzureBlobFSReadSettings",
-										"recursive": true
+										"recursive": false,
+										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
 										"type": "DelimitedTextReadSettings"
@@ -395,22 +396,8 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SourceDataset",
-									"type": "DatasetReference",
-									"parameters": {
-										"fileName": {
-											"value": "@item().name",
-											"type": "Expression"
-										},
-										"SourceContainer": {
-											"value": "@pipeline().parameters.SourceContainer",
-											"type": "Expression"
-										},
-										"SourceDirectory": {
-											"value": "@pipeline().parameters.SourceDirectory",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "Loty",
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
