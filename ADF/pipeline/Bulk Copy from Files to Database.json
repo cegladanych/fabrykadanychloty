@@ -16,21 +16,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "GetMetadataDataset",
-						"type": "DatasetReference",
-						"parameters": {
-							"SourceContainer": {
-								"value": "@pipeline().parameters.SourceContainer",
-								"type": "Expression"
-							},
-							"SourceDirectory": {
-								"value": "@pipeline().parameters.SourceDirectory",
-								"type": "Expression"
-							}
-						}
+						"referenceName": "LinieLotnicze",
+						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"childItems"
+						"structure"
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
@@ -86,7 +76,322 @@
 									"type": "AzureSqlSink",
 									"tableOption": "autoCreate"
 								},
-								"enableStaging": false
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 1
+											},
+											"sink": {
+												"name": "Column1",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 2
+											},
+											"sink": {
+												"name": "Column2",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 3
+											},
+											"sink": {
+												"name": "Column3",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 4
+											},
+											"sink": {
+												"name": "Column4",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 5
+											},
+											"sink": {
+												"name": "Column5",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 6
+											},
+											"sink": {
+												"name": "Column6",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 7
+											},
+											"sink": {
+												"name": "Column7",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 8
+											},
+											"sink": {
+												"name": "Column8",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 9
+											},
+											"sink": {
+												"name": "Column9",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 10
+											},
+											"sink": {
+												"name": "Column10",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 11
+											},
+											"sink": {
+												"name": "Column11",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 12
+											},
+											"sink": {
+												"name": "Column12",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 13
+											},
+											"sink": {
+												"name": "Column13",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 14
+											},
+											"sink": {
+												"name": "Column14",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 15
+											},
+											"sink": {
+												"name": "Column15",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 16
+											},
+											"sink": {
+												"name": "Column16",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 17
+											},
+											"sink": {
+												"name": "Column17",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 18
+											},
+											"sink": {
+												"name": "Column18",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 19
+											},
+											"sink": {
+												"name": "Column19",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 20
+											},
+											"sink": {
+												"name": "Column20",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 21
+											},
+											"sink": {
+												"name": "Column21",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 22
+											},
+											"sink": {
+												"name": "Column22",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 23
+											},
+											"sink": {
+												"name": "Column23",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 24
+											},
+											"sink": {
+												"name": "Column24",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 25
+											},
+											"sink": {
+												"name": "Column25",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 26
+											},
+											"sink": {
+												"name": "Column26",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 27
+											},
+											"sink": {
+												"name": "Column27",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 28
+											},
+											"sink": {
+												"name": "Column28",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 29
+											},
+											"sink": {
+												"name": "Column29",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 30
+											},
+											"sink": {
+												"name": "Column30",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"type": "String",
+												"ordinal": 31
+											},
+											"sink": {
+												"name": "Column31",
+												"type": "String"
+											}
+										}
+									]
+								}
 							},
 							"inputs": [
 								{
