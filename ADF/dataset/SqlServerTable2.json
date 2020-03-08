@@ -159,7 +159,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "Flights"
+			"table": "Airlines"
 		}
 	}
 }
