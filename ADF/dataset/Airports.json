@@ -1,5 +1,5 @@
 {
-	"name": "Lotniska",
+	"name": "Airports",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeGeneral",
@@ -15,28 +15,36 @@
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
 			{
+				"name": "IATA_CODE",
 				"type": "String"
 			},
 			{
+				"name": "AIRPORT",
 				"type": "String"
 			},
 			{
+				"name": "CITY",
 				"type": "String"
 			},
 			{
+				"name": "STATE",
 				"type": "String"
 			},
 			{
+				"name": "COUNTRY",
 				"type": "String"
 			},
 			{
+				"name": "LATITUDE",
 				"type": "String"
 			},
 			{
+				"name": "LONGITUDE",
 				"type": "String"
 			}
 		]
