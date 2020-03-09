@@ -34,7 +34,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "1",
+									"name": "IATA_CODE",
 									"type": "String"
 								},
 								"sink": {
@@ -44,7 +44,7 @@
 							},
 							{
 								"source": {
-									"name": "2",
+									"name": "AIRLINE",
 									"type": "String"
 								},
 								"sink": {
@@ -57,7 +57,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "LinieLotnicze",
+						"referenceName": "Airlines",
 						"type": "DatasetReference"
 					}
 				],
