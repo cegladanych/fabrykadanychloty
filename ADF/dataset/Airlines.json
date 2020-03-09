@@ -1,5 +1,5 @@
 {
-	"name": "LinieLotnicze",
+	"name": "Airlines",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeGeneral",
