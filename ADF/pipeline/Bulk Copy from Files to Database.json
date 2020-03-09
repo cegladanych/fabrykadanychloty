@@ -120,14 +120,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"SourceContainer": {
-				"type": "string"
-			},
-			"SourceDirectory": {
-				"type": "string"
-			}
-		},
 		"annotations": []
 	}
 }
