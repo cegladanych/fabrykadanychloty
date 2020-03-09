@@ -34,8 +34,8 @@
 						"mappings": [
 							{
 								"source": {
-									"type": "String",
-									"ordinal": 1
+									"name": "1",
+									"type": "String"
 								},
 								"sink": {
 									"name": "IATACODE",
@@ -44,8 +44,8 @@
 							},
 							{
 								"source": {
-									"type": "String",
-									"ordinal": 2
+									"name": "2",
+									"type": "String"
 								},
 								"sink": {
 									"name": "AIRLINE",
