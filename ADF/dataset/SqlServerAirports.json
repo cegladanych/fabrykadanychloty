@@ -1,5 +1,5 @@
 {
-	"name": "SqlServerTable2",
+	"name": "SqlServerAirports",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SqlServerloty",
@@ -159,7 +159,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "Airlines"
+			"table": "Airports"
 		}
 	}
 }
