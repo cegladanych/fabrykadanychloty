@@ -1,0 +1,165 @@
+{
+	"name": "SqlServerFlights",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServerloty",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "YEAR",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MONTH",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DAY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DAY_OF_WEEK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AIRLINE",
+				"type": "varchar"
+			},
+			{
+				"name": "FLIGHT_NUMBER",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TAIL_NUMBER",
+				"type": "varchar"
+			},
+			{
+				"name": "ORIGIN_AIRPORT",
+				"type": "varchar"
+			},
+			{
+				"name": "DESTINATION_AIRPORT",
+				"type": "varchar"
+			},
+			{
+				"name": "SCHEDULED_DEPARTURE",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DEPARTURE_TIME",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DEPARTURE_DELAY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TAXI_OUT",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "WHEELS_OFF",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SCHEDULED_TIME",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ELAPSED_TIME",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AIR_TIME",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DISTANCE",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "WHEELS_ON",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TAXI_IN",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SCHEDULED_ARRIVAL",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ARRIVAL_TIME",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ARRIVAL_DELAY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DIVERTED",
+				"type": "bit"
+			},
+			{
+				"name": "CANCELLED",
+				"type": "bit"
+			},
+			{
+				"name": "CANCELLATION_REASON",
+				"type": "varchar"
+			},
+			{
+				"name": "AIR_SYSTEM_DELAY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SECURITY_DELAY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AIRLINE_DELAY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LATE_AIRCRAFT_DELAY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "WEATHER_DELAY",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Flights"
+		}
+	}
+}
