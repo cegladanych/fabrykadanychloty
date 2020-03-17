@@ -26,15 +26,7 @@
 						}
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
+						"type": "SqlServerSink"
 					},
 					"enableStaging": false,
 					"translator": {
@@ -71,7 +63,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Airlines",
+						"referenceName": "SqlServerAirlines",
 						"type": "DatasetReference"
 					}
 				]
