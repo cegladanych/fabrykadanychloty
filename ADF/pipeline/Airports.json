@@ -28,7 +28,82 @@
 					"sink": {
 						"type": "SqlServerSink"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "IATA_CODE",
+									"type": "String"
+								},
+								"sink": {
+									"name": "IATACODE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "AIRPORT",
+									"type": "String"
+								},
+								"sink": {
+									"name": "AIRPORT",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CITY",
+									"type": "String"
+								},
+								"sink": {
+									"name": "CITY",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "STATE",
+									"type": "String"
+								},
+								"sink": {
+									"name": "STATE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "COUNTRY",
+									"type": "String"
+								},
+								"sink": {
+									"name": "COUNTRY",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LATITUDE",
+									"type": "String"
+								},
+								"sink": {
+									"name": "LATITUDE",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "LONGITUDE",
+									"type": "String"
+								},
+								"sink": {
+									"name": "LONGITUDE",
+									"type": "Decimal"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
