@@ -81,6 +81,26 @@
 									"name": "COUNTRY",
 									"type": "String"
 								}
+							},
+							{
+								"source": {
+									"name": "LATITUDE",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "LATITUDE",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "LONGITUDE",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "LONGITUDE",
+									"type": "Decimal"
+								}
 							}
 						]
 					}
