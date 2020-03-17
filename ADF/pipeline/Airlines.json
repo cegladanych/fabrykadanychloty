@@ -34,7 +34,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "IATA_CODE",
+									"name": "IATACODE",
 									"type": "String"
 								},
 								"sink": {
