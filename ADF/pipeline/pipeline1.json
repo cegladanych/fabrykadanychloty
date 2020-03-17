@@ -15,10 +15,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataset": {
-						"referenceName": "LinieLotnicze",
-						"type": "DatasetReference"
-					},
 					"fieldList": [
 						"lastModified"
 					],
@@ -78,15 +74,9 @@
 								},
 								"enableStaging": false
 							},
-							"inputs": [
-								{
-									"referenceName": "LinieLotnicze",
-									"type": "DatasetReference"
-								}
-							],
 							"outputs": [
 								{
-									"referenceName": "SqlServerTable1",
+									"referenceName": "SqlServerAirlines",
 									"type": "DatasetReference"
 								}
 							]
