@@ -20,7 +20,7 @@
 		},
 		"schema": [
 			{
-				"name": "IATA_CODE",
+				"name": "IATACODE",
 				"type": "String"
 			},
 			{
