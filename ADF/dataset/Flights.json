@@ -1,5 +1,5 @@
 {
-	"name": "Loty",
+	"name": "Flights",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeGeneral",
@@ -15,6 +15,7 @@
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
