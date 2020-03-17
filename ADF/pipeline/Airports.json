@@ -85,7 +85,7 @@
 							{
 								"source": {
 									"name": "LATITUDE",
-									"type": "String"
+									"type": "Decimal"
 								},
 								"sink": {
 									"name": "LATITUDE",
@@ -95,7 +95,7 @@
 							{
 								"source": {
 									"name": "LONGITUDE",
-									"type": "String"
+									"type": "Decimal"
 								},
 								"sink": {
 									"name": "LONGITUDE",
