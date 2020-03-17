@@ -15,9 +15,11 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"fieldList": [
-						"lastModified"
-					],
+					"dataset": {
+						"referenceName": "Flights",
+						"type": "DatasetReference"
+					},
+					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
 						"recursive": true
