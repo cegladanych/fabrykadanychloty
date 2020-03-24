@@ -5,7 +5,14 @@
 			{
 				"name": "Get Files",
 				"type": "GetMetadata",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Validation1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -20,10 +27,7 @@
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						{
-							"value": "Child Items",
-							"type": "Expression"
-						}
+						"childItems"
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
@@ -120,6 +124,20 @@
 							]
 						}
 					]
+				}
+			},
+			{
+				"name": "Validation1",
+				"type": "Validation",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "Airlines",
+						"type": "DatasetReference"
+					},
+					"timeout": "7.00:00:00",
+					"sleep": 10
 				}
 			}
 		],
