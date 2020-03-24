@@ -20,7 +20,10 @@
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"structure"
+						{
+							"value": "Child Items",
+							"type": "Expression"
+						}
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
@@ -45,7 +48,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Files').output",
+						"value": "@activity('Get Files').output.childItems",
 						"type": "Expression"
 					},
 					"activities": [
@@ -106,6 +109,12 @@
 							"inputs": [
 								{
 									"referenceName": "Airlines",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SqlServerAirlines",
 									"type": "DatasetReference"
 								}
 							]
