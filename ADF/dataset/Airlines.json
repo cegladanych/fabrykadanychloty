@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "airlines.csv",
+				"folderPath": "Airlines",
 				"fileSystem": "linielotnicze"
 			},
 			"columnDelimiter": ",",
