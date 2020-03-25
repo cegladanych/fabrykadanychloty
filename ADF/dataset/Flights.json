@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "flights.csv",
+				"folderPath": "Flights",
 				"fileSystem": "loty"
 			},
 			"columnDelimiter": ",",
