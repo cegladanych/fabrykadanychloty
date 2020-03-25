@@ -7,7 +7,7 @@
 				"type": "GetMetadata",
 				"dependsOn": [
 					{
-						"activity": "Validation1",
+						"activity": "Walidacja",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -128,7 +128,7 @@
 				}
 			},
 			{
-				"name": "Validation1",
+				"name": "Walidacja",
 				"type": "Validation",
 				"dependsOn": [],
 				"userProperties": [],
