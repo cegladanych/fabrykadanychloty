@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "airports.csv",
+				"folderPath": "Airports",
 				"fileSystem": "lotniska"
 			},
 			"columnDelimiter": ",",

@@ -3,9 +3,16 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
-				"type": "Copy",
-				"dependsOn": [],
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "Validation1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -15,108 +22,173 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "SqlServerSink"
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "IATA_CODE",
-									"type": "String"
-								},
-								"sink": {
-									"name": "IATACODE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "AIRPORT",
-									"type": "String"
-								},
-								"sink": {
-									"name": "AIRPORT",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CITY",
-									"type": "String"
-								},
-								"sink": {
-									"name": "CITY",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "STATE",
-									"type": "String"
-								},
-								"sink": {
-									"name": "STATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "COUNTRY",
-									"type": "String"
-								},
-								"sink": {
-									"name": "COUNTRY",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "LATITUDE",
-									"type": "Decimal"
-								},
-								"sink": {
-									"name": "LATITUDE",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"name": "LONGITUDE",
-									"type": "Decimal"
-								},
-								"sink": {
-									"name": "LONGITUDE",
-									"type": "Decimal"
-								}
-							}
-						]
-					}
-				},
-				"inputs": [
-					{
+					"dataset": {
 						"referenceName": "Airports",
 						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
-				"outputs": [
-					{
-						"referenceName": "SqlServerAirports",
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata1').output.childitems",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "SqlServerSink"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "IATA_CODE",
+												"type": "String"
+											},
+											"sink": {
+												"name": "IATACODE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "AIRPORT",
+												"type": "String"
+											},
+											"sink": {
+												"name": "AIRPORT",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CITY",
+												"type": "String"
+											},
+											"sink": {
+												"name": "CITY",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "STATE",
+												"type": "String"
+											},
+											"sink": {
+												"name": "STATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "COUNTRY",
+												"type": "String"
+											},
+											"sink": {
+												"name": "COUNTRY",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "LATITUDE",
+												"type": "Decimal"
+											},
+											"sink": {
+												"name": "LATITUDE",
+												"type": "Decimal"
+											}
+										},
+										{
+											"source": {
+												"name": "LONGITUDE",
+												"type": "Decimal"
+											},
+											"sink": {
+												"name": "LONGITUDE",
+												"type": "Decimal"
+											}
+										}
+									]
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Airports",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SqlServerAirports",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Validation1",
+				"type": "Validation",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "Airports",
 						"type": "DatasetReference"
-					}
-				]
+					},
+					"timeout": "7.00:00:00",
+					"sleep": 10,
+					"childItems": true
+				}
 			}
 		],
 		"annotations": []
