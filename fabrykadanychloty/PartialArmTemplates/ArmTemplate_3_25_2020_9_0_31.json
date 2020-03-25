@@ -1,0 +1,1669 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "fabrykadanychloty"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Airlines')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Walidacja Airlines",
+						"type": "Validation",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Airlines",
+								"type": "DatasetReference"
+							},
+							"timeout": "7.00:00:00",
+							"sleep": 10,
+							"childItems": true
+						}
+					},
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Walidacja Airlines",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Airlines",
+								"type": "DatasetReference"
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childitems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"wildcardFileName": "*",
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink"
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "IATA_CODE",
+														"type": "String"
+													},
+													"sink": {
+														"name": "IATACODE",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "AIRLINE",
+														"type": "String"
+													},
+													"sink": {
+														"name": "AIRLINE",
+														"type": "String"
+													}
+												}
+											]
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "Airlines",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SqlServerAirlines",
+											"type": "DatasetReference"
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Airlines')]",
+				"[concat(variables('factoryId'), '/datasets/SqlServerAirlines')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Airports')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Validation1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Airports",
+								"type": "DatasetReference"
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childitems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"wildcardFileName": "*",
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink"
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "IATA_CODE",
+														"type": "String"
+													},
+													"sink": {
+														"name": "IATACODE",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "AIRPORT",
+														"type": "String"
+													},
+													"sink": {
+														"name": "AIRPORT",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "CITY",
+														"type": "String"
+													},
+													"sink": {
+														"name": "CITY",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "STATE",
+														"type": "String"
+													},
+													"sink": {
+														"name": "STATE",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "COUNTRY",
+														"type": "String"
+													},
+													"sink": {
+														"name": "COUNTRY",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "LATITUDE",
+														"type": "Decimal"
+													},
+													"sink": {
+														"name": "LATITUDE",
+														"type": "Decimal"
+													}
+												},
+												{
+													"source": {
+														"name": "LONGITUDE",
+														"type": "Decimal"
+													},
+													"sink": {
+														"name": "LONGITUDE",
+														"type": "Decimal"
+													}
+												}
+											]
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "Airports",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SqlServerAirports",
+											"type": "DatasetReference"
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Validation1",
+						"type": "Validation",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Airports",
+								"type": "DatasetReference"
+							},
+							"timeout": "7.00:00:00",
+							"sleep": 10,
+							"childItems": true
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Airports')]",
+				"[concat(variables('factoryId'), '/datasets/SqlServerAirports')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Bulk Copy from Files to Database')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Files",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Walidacja",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Airlines",
+								"type": "DatasetReference"
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEachFile",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Files",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Files').output.childItems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy Flights",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": false,
+												"wildcardFileName": "*",
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink"
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "IATA_CODE",
+														"type": "String"
+													},
+													"sink": {
+														"name": "IATACODE",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "AIRLINE",
+														"type": "String"
+													},
+													"sink": {
+														"name": "AIRLINE",
+														"type": "String"
+													}
+												}
+											]
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "Airlines",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SqlServerAirlines",
+											"type": "DatasetReference"
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Walidacja",
+						"type": "Validation",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Airlines",
+								"type": "DatasetReference"
+							},
+							"timeout": "7.00:00:00",
+							"sleep": 10,
+							"childItems": true
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Airlines')]",
+				"[concat(variables('factoryId'), '/datasets/SqlServerAirlines')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Flights')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childitems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy flights",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"wildcardFileName": "*",
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"tableOption": "autoCreate"
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "YEAR",
+														"type": "String"
+													},
+													"sink": {
+														"name": "YEAR",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "MONTH",
+														"type": "String"
+													},
+													"sink": {
+														"name": "MONTH",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "DAY",
+														"type": "String"
+													},
+													"sink": {
+														"name": "DAY",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "DAY_OF_WEEK",
+														"type": "String"
+													},
+													"sink": {
+														"name": "DAY_OF_WEEK",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "AIRLINE",
+														"type": "String"
+													},
+													"sink": {
+														"name": "AIRLINE",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "FLIGHT_NUMBER",
+														"type": "String"
+													},
+													"sink": {
+														"name": "FLIGHT_NUMBER",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "TAIL_NUMBER",
+														"type": "String"
+													},
+													"sink": {
+														"name": "TAIL_NUMBER",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "ORIGIN_AIRPORT",
+														"type": "String"
+													},
+													"sink": {
+														"name": "ORIGIN_AIRPORT",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "DESTINATION_AIRPORT",
+														"type": "String"
+													},
+													"sink": {
+														"name": "DESTINATION_AIRPORT",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "SCHEDULED_DEPARTURE",
+														"type": "String"
+													},
+													"sink": {
+														"name": "SCHEDULED_DEPARTURE",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "DEPARTURE_TIME",
+														"type": "String"
+													},
+													"sink": {
+														"name": "DEPARTURE_TIME",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "DEPARTURE_DELAY",
+														"type": "String"
+													},
+													"sink": {
+														"name": "DEPARTURE_DELAY",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "TAXI_OUT",
+														"type": "String"
+													},
+													"sink": {
+														"name": "TAXI_OUT",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "WHEELS_OFF",
+														"type": "String"
+													},
+													"sink": {
+														"name": "WHEELS_OFF",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "SCHEDULED_TIME",
+														"type": "String"
+													},
+													"sink": {
+														"name": "SCHEDULED_TIME",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "ELAPSED_TIME",
+														"type": "String"
+													},
+													"sink": {
+														"name": "ELAPSED_TIME",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "AIR_TIME",
+														"type": "String"
+													},
+													"sink": {
+														"name": "AIR_TIME",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "DISTANCE",
+														"type": "String"
+													},
+													"sink": {
+														"name": "DISTANCE",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "WHEELS_ON",
+														"type": "String"
+													},
+													"sink": {
+														"name": "WHEELS_ON",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "TAXI_IN",
+														"type": "String"
+													},
+													"sink": {
+														"name": "TAXI_IN",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "SCHEDULED_ARRIVAL",
+														"type": "String"
+													},
+													"sink": {
+														"name": "SCHEDULED_ARRIVAL",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "ARRIVAL_TIME",
+														"type": "String"
+													},
+													"sink": {
+														"name": "ARRIVAL_TIME",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "ARRIVAL_DELAY",
+														"type": "String"
+													},
+													"sink": {
+														"name": "ARRIVAL_DELAY",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "DIVERTED",
+														"type": "String"
+													},
+													"sink": {
+														"name": "DIVERTED",
+														"type": "Boolean"
+													}
+												},
+												{
+													"source": {
+														"name": "CANCELLED",
+														"type": "String"
+													},
+													"sink": {
+														"name": "CANCELLED",
+														"type": "Boolean"
+													}
+												},
+												{
+													"source": {
+														"name": "CANCELLATION_REASON",
+														"type": "String"
+													},
+													"sink": {
+														"name": "CANCELLATION_REASON",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "AIR_SYSTEM_DELAY",
+														"type": "String"
+													},
+													"sink": {
+														"name": "AIR_SYSTEM_DELAY",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "SECURITY_DELAY",
+														"type": "String"
+													},
+													"sink": {
+														"name": "SECURITY_DELAY",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "AIRLINE_DELAY",
+														"type": "String"
+													},
+													"sink": {
+														"name": "AIRLINE_DELAY",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "LATE_AIRCRAFT_DELAY",
+														"type": "String"
+													},
+													"sink": {
+														"name": "LATE_AIRCRAFT_DELAY",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"name": "WEATHER_DELAY",
+														"type": "String"
+													},
+													"sink": {
+														"name": "WEATHER_DELAY",
+														"type": "Int32"
+													}
+												}
+											]
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "Flights",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SqlServerFlights",
+											"type": "DatasetReference"
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Validation1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Flights",
+								"type": "DatasetReference"
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Validation1",
+						"type": "Validation",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Flights",
+								"type": "DatasetReference"
+							},
+							"timeout": "7.00:00:00",
+							"sleep": 10,
+							"childItems": true
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Flights')]",
+				"[concat(variables('factoryId'), '/datasets/SqlServerFlights')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Airlines')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeGeneral",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Airlines",
+						"fileSystem": "linielotnicze"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "IATACODE",
+						"type": "String"
+					},
+					{
+						"name": "AIRLINE",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeGeneral')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Airports')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeGeneral",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Airports",
+						"fileSystem": "lotniska"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "IATA_CODE",
+						"type": "String"
+					},
+					{
+						"name": "AIRPORT",
+						"type": "String"
+					},
+					{
+						"name": "CITY",
+						"type": "String"
+					},
+					{
+						"name": "STATE",
+						"type": "String"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "String"
+					},
+					{
+						"name": "LATITUDE",
+						"type": "String"
+					},
+					{
+						"name": "LONGITUDE",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeGeneral')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Flights')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeGeneral",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Flights",
+						"fileSystem": "loty"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "YEAR",
+						"type": "String"
+					},
+					{
+						"name": "MONTH",
+						"type": "String"
+					},
+					{
+						"name": "DAY",
+						"type": "String"
+					},
+					{
+						"name": "DAY_OF_WEEK",
+						"type": "String"
+					},
+					{
+						"name": "AIRLINE",
+						"type": "String"
+					},
+					{
+						"name": "FLIGHT_NUMBER",
+						"type": "String"
+					},
+					{
+						"name": "TAIL_NUMBER",
+						"type": "String"
+					},
+					{
+						"name": "ORIGIN_AIRPORT",
+						"type": "String"
+					},
+					{
+						"name": "DESTINATION_AIRPORT",
+						"type": "String"
+					},
+					{
+						"name": "SCHEDULED_DEPARTURE",
+						"type": "String"
+					},
+					{
+						"name": "DEPARTURE_TIME",
+						"type": "String"
+					},
+					{
+						"name": "DEPARTURE_DELAY",
+						"type": "String"
+					},
+					{
+						"name": "TAXI_OUT",
+						"type": "String"
+					},
+					{
+						"name": "WHEELS_OFF",
+						"type": "String"
+					},
+					{
+						"name": "SCHEDULED_TIME",
+						"type": "String"
+					},
+					{
+						"name": "ELAPSED_TIME",
+						"type": "String"
+					},
+					{
+						"name": "AIR_TIME",
+						"type": "String"
+					},
+					{
+						"name": "DISTANCE",
+						"type": "String"
+					},
+					{
+						"name": "WHEELS_ON",
+						"type": "String"
+					},
+					{
+						"name": "TAXI_IN",
+						"type": "String"
+					},
+					{
+						"name": "SCHEDULED_ARRIVAL",
+						"type": "String"
+					},
+					{
+						"name": "ARRIVAL_TIME",
+						"type": "String"
+					},
+					{
+						"name": "ARRIVAL_DELAY",
+						"type": "String"
+					},
+					{
+						"name": "DIVERTED",
+						"type": "String"
+					},
+					{
+						"name": "CANCELLED",
+						"type": "String"
+					},
+					{
+						"name": "CANCELLATION_REASON",
+						"type": "String"
+					},
+					{
+						"name": "AIR_SYSTEM_DELAY",
+						"type": "String"
+					},
+					{
+						"name": "SECURITY_DELAY",
+						"type": "String"
+					},
+					{
+						"name": "AIRLINE_DELAY",
+						"type": "String"
+					},
+					{
+						"name": "LATE_AIRCRAFT_DELAY",
+						"type": "String"
+					},
+					{
+						"name": "WEATHER_DELAY",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeGeneral')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerAirlines')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerloty",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "IATACODE",
+						"type": "varchar"
+					},
+					{
+						"name": "AIRLINE",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Airlines"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerAirports')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerloty",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "YEAR",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MONTH",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DAY_OF_WEEK",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AIRLINE",
+						"type": "varchar"
+					},
+					{
+						"name": "FLIGHT_NUMBER",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TAIL_NUMBER",
+						"type": "varchar"
+					},
+					{
+						"name": "ORIGIN_AIRPORT",
+						"type": "varchar"
+					},
+					{
+						"name": "DESTINATION_AIRPORT",
+						"type": "varchar"
+					},
+					{
+						"name": "SCHEDULED_DEPARTURE",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DEPARTURE_TIME",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DEPARTURE_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TAXI_OUT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "WHEELS_OFF",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SCHEDULED_TIME",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ELAPSED_TIME",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AIR_TIME",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DISTANCE",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "WHEELS_ON",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TAXI_IN",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SCHEDULED_ARRIVAL",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ARRIVAL_TIME",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ARRIVAL_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DIVERTED",
+						"type": "bit"
+					},
+					{
+						"name": "CANCELLED",
+						"type": "bit"
+					},
+					{
+						"name": "CANCELLATION_REASON",
+						"type": "varchar"
+					},
+					{
+						"name": "AIR_SYSTEM_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SECURITY_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AIRLINE_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "LATE_AIRCRAFT_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "WEATHER_DELAY",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Airports"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerFlights')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerloty",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "YEAR",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MONTH",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DAY_OF_WEEK",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AIRLINE",
+						"type": "varchar"
+					},
+					{
+						"name": "FLIGHT_NUMBER",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TAIL_NUMBER",
+						"type": "varchar"
+					},
+					{
+						"name": "ORIGIN_AIRPORT",
+						"type": "varchar"
+					},
+					{
+						"name": "DESTINATION_AIRPORT",
+						"type": "varchar"
+					},
+					{
+						"name": "SCHEDULED_DEPARTURE",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DEPARTURE_TIME",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DEPARTURE_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TAXI_OUT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "WHEELS_OFF",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SCHEDULED_TIME",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ELAPSED_TIME",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AIR_TIME",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DISTANCE",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "WHEELS_ON",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TAXI_IN",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SCHEDULED_ARRIVAL",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ARRIVAL_TIME",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ARRIVAL_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DIVERTED",
+						"type": "bit"
+					},
+					{
+						"name": "CANCELLED",
+						"type": "bit"
+					},
+					{
+						"name": "CANCELLATION_REASON",
+						"type": "varchar"
+					},
+					{
+						"name": "AIR_SYSTEM_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SECURITY_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AIRLINE_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "LATE_AIRCRAFT_DELAY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "WEATHER_DELAY",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Flights"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeGeneral')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "https://datalakegeneral.dfs.core.windows.net",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "**********"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Execute Airlines",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Airlines",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true
+						}
+					},
+					{
+						"name": "Execute Airports",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Execute Airlines",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Airports",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true
+						}
+					},
+					{
+						"name": "Execute Flights",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Execute Airports",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Flights",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Airlines')]",
+				"[concat(variables('factoryId'), '/pipelines/Airports')]",
+				"[concat(variables('factoryId'), '/pipelines/Flights')]"
+			]
+		}
+	]
+}
