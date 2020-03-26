@@ -18,14 +18,7 @@
 			{
 				"name": "Execute Airports",
 				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "Execute Airlines",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
@@ -38,14 +31,7 @@
 			{
 				"name": "Execute Flights",
 				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "Execute Airports",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
