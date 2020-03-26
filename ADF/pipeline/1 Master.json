@@ -1,5 +1,5 @@
 {
-	"name": "Master",
+	"name": "1 Master",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "Airlines",
+						"referenceName": "2 Airlines",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -36,7 +36,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "Airports",
+						"referenceName": "3 Airports",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -56,7 +56,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "Flights",
+						"referenceName": "4 Flights",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
