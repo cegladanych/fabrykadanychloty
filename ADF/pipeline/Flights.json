@@ -385,14 +385,7 @@
 			{
 				"name": "Get Metadata1",
 				"type": "GetMetadata",
-				"dependsOn": [
-					{
-						"activity": "Validation1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -416,21 +409,6 @@
 					"formatSettings": {
 						"type": "DelimitedTextReadSettings"
 					}
-				}
-			},
-			{
-				"name": "Validation1",
-				"type": "Validation",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"dataset": {
-						"referenceName": "Flights",
-						"type": "DatasetReference"
-					},
-					"timeout": "7.00:00:00",
-					"sleep": 10,
-					"childItems": true
 				}
 			}
 		],
