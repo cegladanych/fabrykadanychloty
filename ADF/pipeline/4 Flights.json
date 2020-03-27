@@ -7,7 +7,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get Metadata1",
+						"activity": "Flights Metadata",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Metadata1').output.childitems",
+						"value": "@activity('Flights Metadata').output.childitems",
 						"type": "Expression"
 					},
 					"activities": [
@@ -382,7 +382,7 @@
 				}
 			},
 			{
-				"name": "Get Metadata1",
+				"name": "Flights Metadata",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
