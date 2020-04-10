@@ -1,0 +1,1 @@
+This is modul terraform ktory poslozy do deploymentu naszej infrastruktury
